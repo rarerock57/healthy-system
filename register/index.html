@@ -109,8 +109,8 @@
         <div class="section-title">📊 ข้อมูลร่างกาย</div>
         <div class="grid-2">
             <div class="mb-3">
-                <label class="small fw-bold text-muted ms-2">อายุ (ปี)</label>
-                <input type="number" name="age" class="form-control" placeholder="0" required>
+                <label class="small fw-bold text-muted ms-2">วันเกิด</label>
+                <input type="date" name="birthday" class="form-control" required>
             </div>
             <div class="mb-3">
                 <label class="small fw-bold text-muted ms-2">เพศ</label>
@@ -148,14 +148,15 @@
         </button>
 
         <div class="text-center mt-3">
-            <a href="../" class="text-decoration-none small fw-bold" style="color: var(--primary-blue);">กลับไปหน้าเข้าสู่ระบบ</a>
+            <a href="../index.html" class="text-decoration-none small fw-bold" style="color: var(--primary-blue);">กลับไปหน้าเข้าสู่ระบบ</a>
         </div>
     </form>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbzu1ns5zZunQpsQ5ygHWW168n26CXTUI36rU3JD03Br1dpzHFskL_Ry-fb-_R7U8BCP/exec";
+    // 🚩 อัปเดต URL ของ API ชุดรวมล่าสุด
+    const API_URL = "https://script.google.com/macros/s/AKfycbxWaY60NQR4xZ9ELrqcNWbETQjffB_nQkfF2yMwx8TltZYkojKbGEX1Zdy26ieaQlDt/exec";
 
     document.getElementById('registerForm').addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -164,12 +165,11 @@
         const btnText = document.getElementById('btnText');
         const btnLoader = document.getElementById('btnLoader');
 
-        // รวบรวมข้อมูลจากฟอร์ม
+        // รวบรวมข้อมูลจากฟอร์ม (จะดึงค่า birthday มาอัตโนมัติ)
         const formData = new FormData(e.target);
         const data = Object.fromEntries(formData.entries());
-        data.action = "register"; // ระบุ Action ให้ .gs
+        data.action = "register"; 
 
-        // แสดงสถานะ Loading
         submitBtn.disabled = true;
         btnText.classList.add('d-none');
         btnLoader.classList.remove('d-none');
@@ -188,7 +188,7 @@
                     text: 'สมัครสมาชิกเรียบร้อยแล้ว กรุณาเข้าสู่ระบบ',
                     confirmButtonColor: '#2563eb'
                 }).then(() => {
-                    window.location.href = "../"; // กลับไปหน้า Login (ถอยหลัง 1 โฟลเดอร์)
+                    window.location.href = "../index.html"; 
                 });
             } else {
                 Swal.fire('ผิดพลาด', result.message, 'error');
