@@ -7,79 +7,174 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap" rel="stylesheet">
+    
     <style>
+        :root {
+            --dark-blue: #1e3a8a;      /* Deep Blue */
+            --primary-blue: #2563eb;   /* Blue */
+            --sky-blue: #60a5fa;       /* Sky Blue */
+            --soft-bg: #f0f9ff;        /* Lightest Blue */
+        }
+
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--dark-blue) 0%, var(--primary-blue) 100%);
             height: 100vh;
-            display: flex; align-items: center; justify-content: center;
-            font-family: 'Kanit', sans-serif; margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Kanit', sans-serif;
+            margin: 0;
         }
+
         .login-card {
-            background: white; padding: 2.5rem; border-radius: 1.5rem;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2); width: 100%; max-width: 400px;
+            background: #ffffff;
+            padding: 2.5rem;
+            border-radius: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .btn-primary { background: #764ba2; border: none; padding: 12px; border-radius: 12px; }
-        .form-control { padding: 12px; border-radius: 10px; border: 2px solid #f0f0f0; }
+
+        .brand-logo {
+            color: var(--primary-blue);
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-login {
+            background: linear-gradient(to right, var(--primary-blue), var(--sky-blue));
+            border: none;
+            color: white;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+            color: white;
+        }
+
+        .form-control {
+            padding: 12px 15px;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            background-color: #f8fafc;
+        }
+
+        .form-control:focus {
+            border-color: var(--sky-blue);
+            box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.1);
+            background-color: #ffffff;
+        }
+
+        .register-link {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .register-link:hover {
+            color: var(--dark-blue);
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
 
 <div class="login-card">
     <div class="text-center mb-4">
-        <i class="bi bi-shield-lock-fill text-primary" style="font-size: 3.5rem; color: #764ba2 !important;"></i>
-        <h2 class="fw-bold mt-2">Healthy System</h2>
-        <p class="text-muted small">เข้าสู่ระบบเพื่อเริ่มต้น</p>
+        <i class="bi bi-person-badge brand-logo"></i>
+        <h2 class="fw-bold" style="color: var(--dark-blue);">Healthy System</h2>
+        <p class="text-muted small">กรุณาเข้าสู่ระบบเพื่อใช้งาน</p>
     </div>
 
-    <form id="loginForm">
+    <form id="loginForm" autocomplete="off">
         <div class="mb-3">
-            <label class="form-label small fw-bold">ชื่อผู้ใช้งาน</label>
-            <input type="text" id="username" class="form-control" placeholder="Username" required>
+            <label class="form-label small fw-bold" style="color: var(--dark-blue);">ชื่อผู้ใช้งาน</label>
+            <input type="text" id="username" class="form-control" placeholder="Username" required autocomplete="off">
         </div>
         <div class="mb-4">
-            <label class="form-label small fw-bold">รหัสผ่าน</label>
-            <input type="password" id="password" class="form-control" placeholder="Password" required>
+            <label class="form-label small fw-bold" style="color: var(--dark-blue);">รหัสผ่าน</label>
+            <input type="password" id="password" class="form-control" placeholder="Password" required autocomplete="new-password">
         </div>
-        <button type="submit" id="submitBtn" class="btn btn-primary w-100">เข้าสู่ระบบ</button>
+        
+        <button type="submit" id="submitBtn" class="btn btn-login w-100">
+            <span id="btnText">เข้าสู่ระบบ</span>
+            <span id="btnLoader" class="spinner-border spinner-border-sm d-none"></span>
+        </button>
     </form>
 
-    <div class="text-center mt-3">
-        <p class="small mb-0">ยังไม่มีบัญชี? <a href="register.html" class="text-decoration-none fw-bold" style="color: #764ba2;">สมัครสมาชิกที่นี่</a></p>
+    <div class="text-center mt-4">
+        <p class="small mb-0 text-muted">ยังไม่มีบัญชี? 
+            <a href="register/" class="register-link">สมัครสมาชิกที่นี่</a>
+        </p>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbzu1ns5zZunQpsQ5ygHWW168n26CXTUI36rU3JD03Br1dpzHFskL_Ry-fb-_R7U8BCP/exec";
 
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
         e.preventDefault();
+        
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const btnLoader = document.getElementById('btnLoader');
 
-        Swal.fire({ title: 'กำลังตรวจสอบ...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+        // แสดงสถานะ Loading
+        submitBtn.disabled = true;
+        btnText.classList.add('d-none');
+        btnLoader.classList.remove('d-none');
 
         try {
             const response = await fetch(API_URL, {
                 method: "POST",
-                body: JSON.stringify({ action: "login", username: username, password: password })
+                body: JSON.stringify({
+                    action: "login",
+                    username: username,
+                    password: password
+                })
             });
+            
             const result = await response.json();
 
             if (result.status === "success") {
-                localStorage.setItem('currentUser', JSON.stringify(result.user));
-                Swal.fire({ icon: 'success', title: 'สำเร็จ!', text: 'ยินดีต้อนรับ', timer: 1500, showConfirmButton: false })
-                .then(() => {
-                    // หากยังไม่ได้สร้างไฟล์ hub.html ลิงก์นี้จะยังขึ้น 404 อยู่นะครับ
-                    window.location.href = "hub.html"; 
+                // 🔒 บันทึกเฉพาะข้อมูลที่ไม่เป็นความลับ (ไม่บันทึกรหัสผ่านลงเครื่อง)
+                localStorage.setItem('currentUser', JSON.stringify({
+                    username: result.user.username,
+                    userId: result.user.userId
+                }));
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'สำเร็จ!',
+                    text: 'ยินดีต้อนรับเข้าสู่ระบบ',
+                    timer: 1500,
+                    showConfirmButton: false
+                }).then(() => {
+                    window.location.href = "hub.html";
                 });
             } else {
                 Swal.fire('ผิดพลาด', result.message, 'error');
             }
+
         } catch (error) {
-            Swal.fire('ผิดพลาด', 'เชื่อมต่อเซิร์ฟเวอร์ไม่ได้', 'error');
+            Swal.fire('ผิดพลาด', 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้', 'error');
+        } finally {
+            submitBtn.disabled = false;
+            btnText.classList.remove('d-none');
+            btnLoader.classList.add('d-none');
         }
     });
 </script>
+
 </body>
 </html>
