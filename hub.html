@@ -7,61 +7,160 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap" rel="stylesheet">
+    
     <style>
-        :root { --dark-blue: #1e3a8a; --primary-blue: #2563eb; --sky-blue: #60a5fa; }
-        body { background-color: #f0f9ff; font-family: 'Kanit', sans-serif; min-height: 100vh; }
-        .hub-card { 
-            background: white; border-radius: 1.5rem; transition: 0.3s; 
-            border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-decoration: none; display: block;
+        :root {
+            --dark-blue: #1e3a8a;      /* น้ำเงินเข้ม */
+            --primary-blue: #2563eb;   /* น้ำเงินหลัก */
+            --sky-blue: #60a5fa;       /* ฟ้าสดใส */
+            --light-bg: #f8fafc;
         }
-        .hub-card:hover { transform: translateY(-10px); box-shadow: 0 10px 25px rgba(37, 99, 235, 0.15); }
+
+        body {
+            background-color: var(--light-bg);
+            font-family: 'Kanit', sans-serif;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        /* Navigation Bar */
+        .navbar-custom {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+
+        .user-name-box {
+            background: #eff6ff;
+            padding: 5px 15px;
+            border-radius: 50px;
+            color: var(--primary-blue);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        /* Card Menu */
+        .hub-card {
+            background: white;
+            border-radius: 2rem;
+            border: none;
+            padding: 2.5rem;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            height: 100%;
+        }
+
+        .hub-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.1);
+        }
+
+        .icon-wrapper {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            transition: 0.3s;
+        }
+
+        /* สีประจำแต่ละเมนู */
+        .bg-exercise { background: #dbeafe; color: #1e40af; }
+        .bg-energy { background: #fee2e2; color: #b91c1c; }
+        .bg-profile { background: #fef3c7; color: #92400e; }
+
+        .btn-logout {
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
-    <nav class="navbar bg-white py-3 shadow-sm mb-5">
-        <div class="container d-flex justify-content-between">
-            <span class="navbar-brand fw-bold" style="color: var(--dark-blue);"><i class="bi bi-heart-pulse-fill me-2"></i>Healthy System</span>
-            <button onclick="logout()" class="btn btn-outline-danger btn-sm rounded-pill">ออกจากระบบ</button>
-        </div>
-    </nav>
 
-    <div class="container text-center">
-        <h2 class="fw-bold mb-4" style="color: var(--dark-blue);">ยินดีต้อนรับคุณ <span id="userDisplay" style="color: var(--primary-blue);">...</span></h2>
-        
-        <div class="row g-4 justify-content-center">
-            <div class="col-md-4">
-                <a href="exercise.html" class="hub-card p-5">
-                    <i class="bi bi-bicycle display-4 text-primary"></i>
-                    <h4 class="mt-3 fw-bold">Exercise</h4>
-                    <p class="text-muted small">บันทึกการออกกำลังกาย</p>
-                </a>
+<nav class="navbar-custom mb-5">
+    <div class="container d-flex justify-content-between align-items-center">
+        <div class="fw-bold fs-4" style="color: var(--dark-blue);">
+            <i class="bi bi-activity me-2" style="color: var(--primary-blue);"></i>Healthy System
+        </div>
+        <div class="d-flex align-items-center gap-3">
+            <div class="user-name-box d-none d-md-block">
+                <i class="bi bi-person-fill me-1"></i>คุณ: <span id="displayName">กำลังโหลด...</span>
             </div>
-            <div class="col-md-4">
-                <a href="energy.html" class="hub-card p-5">
-                    <i class="bi bi-fire display-4 text-danger"></i>
-                    <h4 class="mt-3 fw-bold">Energy</h4>
-                    <p class="text-muted small">บันทึกอาหารและพลังงาน</p>
-                </a>
-            </div>
-            <div class="col-md-4">
-                <a href="profile.html" class="hub-card p-5">
-                    <i class="bi bi-person-circle display-4 text-info"></i>
-                    <h4 class="mt-3 fw-bold">Users</h4>
-                    <p class="text-muted small">จัดการข้อมูลส่วนตัว</p>
-                </a>
-            </div>
+            <button onclick="logout()" class="btn btn-outline-danger btn-logout">
+                <i class="bi bi-box-arrow-right me-1"></i> ออกจากระบบ
+            </button>
         </div>
     </div>
+</nav>
 
-    <script>
-        const userData = JSON.parse(localStorage.getItem('currentUser'));
-        if (!userData) { window.location.href = "index.html"; }
-        else { document.getElementById('userDisplay').innerText = userData.username; }
+<div class="container">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold" style="color: var(--dark-blue);">หน้าชุมทางหลัก</h2>
+        <p class="text-muted">ยินดีต้อนรับกลับมา! วันนี้คุณต้องการจัดการส่วนไหน?</p>
+    </div>
 
-        function logout() {
-            localStorage.removeItem('currentUser');
-            window.location.href = "index.html";
-        }
-    </script>
+    <div class="row g-4 justify-content-center">
+        <div class="col-md-4">
+            <a href="exercise.html" class="hub-card">
+                <div class="icon-wrapper bg-exercise">
+                    <i class="bi bi-bicycle"></i>
+                </div>
+                <h4 class="fw-bold" style="color: var(--dark-blue);">Exercise</h4>
+                <p class="text-muted small mb-0">บันทึกการเผาผลาญจากการออกกำลังกาย</p>
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="energy.html" class="hub-card">
+                <div class="icon-wrapper bg-energy">
+                    <i class="bi bi-fire"></i>
+                </div>
+                <h4 class="fw-bold" style="color: var(--dark-blue);">Energy</h4>
+                <p class="text-muted small mb-0">คำนวณและบันทึกพลังงานจากอาหาร</p>
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="profile.html" class="hub-card">
+                <div class="icon-wrapper bg-profile">
+                    <i class="bi bi-person-gear"></i>
+                </div>
+                <h4 class="fw-bold" style="color: var(--dark-blue);">Users</h4>
+                <p class="text-muted small mb-0">ข้อมูลส่วนตัวและระดับกิจกรรม</p>
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ดึงข้อมูลผู้ใช้งานจาก LocalStorage
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+    // ตรวจสอบความปลอดภัย: ถ้าไม่มีข้อมูลในเครื่องให้เด้งกลับไปหน้า Login
+    if (!currentUser) {
+        window.location.href = "index.html";
+    } else {
+        // นำ "ชื่อจริง" (ดึงมาจาก Col B ของ Profile ตอน Login) มาแสดงผล
+        document.getElementById('displayName').innerText = currentUser.name || "ผู้ใช้งาน";
+    }
+
+    // ฟังก์ชันออกจากระบบ
+    function logout() {
+        localStorage.removeItem('currentUser'); // ล้าง Session
+        window.location.href = "index.html"; // กลับหน้า Login
+    }
+</script>
+
 </body>
 </html>
