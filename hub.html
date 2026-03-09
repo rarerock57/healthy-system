@@ -10,51 +10,36 @@
     
     <style>
         :root {
-            --dark-blue: #1e3a8a;      /* น้ำเงินเข้ม */
-            --primary-blue: #2563eb;   /* น้ำเงินหลัก */
-            --sky-blue: #60a5fa;       /* ฟ้าสดใส */
+            --dark-blue: #1e3a8a;
+            --primary-blue: #2563eb;
+            --sky-blue: #60a5fa;
             --light-bg: #f8fafc;
         }
 
         body {
             background-color: var(--light-bg);
             font-family: 'Kanit', sans-serif;
-            min-height: 100vh;
-            margin: 0;
+            margin: 0; min-height: 100vh;
         }
 
-        /* Navigation Bar */
+        /* Navbar */
         .navbar-custom {
-            background: white;
-            border-bottom: 1px solid #e2e8f0;
-            padding: 1rem 0;
+            background: white; border-bottom: 1px solid #e2e8f0; padding: 1rem 0;
             box-shadow: 0 2px 10px rgba(0,0,0,0.02);
         }
 
-        .user-name-box {
-            background: #eff6ff;
-            padding: 5px 15px;
-            border-radius: 50px;
-            color: var(--primary-blue);
-            font-weight: 500;
-            font-size: 0.9rem;
+        .name-tag {
+            background: #eff6ff; padding: 6px 16px; border-radius: 50px;
+            color: var(--primary-blue); font-weight: 500; font-size: 0.9rem;
         }
 
         /* Card Menu */
         .hub-card {
-            background: white;
-            border-radius: 2rem;
-            border: none;
-            padding: 2.5rem;
-            text-align: center;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            background: white; border-radius: 2rem; border: none;
+            padding: 2rem; text-align: center; text-decoration: none;
+            transition: all 0.3s ease; height: 100%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            height: 100%;
         }
 
         .hub-card:hover {
@@ -62,28 +47,19 @@
             box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.1);
         }
 
-        .icon-wrapper {
-            width: 80px;
-            height: 80px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-            transition: 0.3s;
+        .icon-box {
+            width: 70px; height: 70px; border-radius: 20px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.2rem; margin-bottom: 1.2rem;
         }
 
-        /* สีประจำแต่ละเมนู */
-        .bg-exercise { background: #dbeafe; color: #1e40af; }
-        .bg-energy { background: #fee2e2; color: #b91c1c; }
-        .bg-profile { background: #fef3c7; color: #92400e; }
+        /* Colors for each card */
+        .bg-ex { background: #dbeafe; color: #1e40af; } /* Exercise */
+        .bg-en { background: #fee2e2; color: #b91c1c; } /* Energy */
+        .bg-calc { background: #f0fdf4; color: #166534; } /* Calculate */
+        .bg-us { background: #fef3c7; color: #92400e; } /* Users */
 
-        .btn-logout {
-            border-radius: 10px;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
+        .btn-logout { border-radius: 10px; font-size: 0.85rem; font-weight: 500; }
     </style>
 </head>
 <body>
@@ -94,11 +70,11 @@
             <i class="bi bi-activity me-2" style="color: var(--primary-blue);"></i>Healthy System
         </div>
         <div class="d-flex align-items-center gap-3">
-            <div class="user-name-box d-none d-md-block">
+            <div class="name-tag d-none d-md-block">
                 <i class="bi bi-person-fill me-1"></i>คุณ: <span id="displayName">กำลังโหลด...</span>
             </div>
-            <button onclick="logout()" class="btn btn-outline-danger btn-logout">
-                <i class="bi bi-box-arrow-right me-1"></i> ออกจากระบบ
+            <button onclick="logout()" class="btn btn-outline-danger btn-logout px-3">
+                <i class="bi bi-box-arrow-right"></i> ออกจากระบบ
             </button>
         </div>
     </div>
@@ -106,59 +82,66 @@
 
 <div class="container">
     <div class="text-center mb-5">
-        <h2 class="fw-bold" style="color: var(--dark-blue);">หน้าชุมทางหลัก</h2>
-        <p class="text-muted">ยินดีต้อนรับกลับมา! วันนี้คุณต้องการจัดการส่วนไหน?</p>
+        <h2 class="fw-bold" style="color: var(--dark-blue);">ศูนย์รวมเมนูจัดการสุขภาพ</h2>
+        <p class="text-muted">เลือกรายการที่ต้องการเพื่อเริ่มดูแลตัวเองวันนี้</p>
     </div>
 
-    <div class="row g-4 justify-content-center">
-        <div class="col-md-4">
+    <div class="row g-4">
+        <div class="col-6 col-lg-3">
+            <a href="calculate.html" class="hub-card">
+                <div class="icon-box bg-calc">
+                    <i class="bi bi-calculator"></i>
+                </div>
+                <h5 class="fw-bold" style="color: var(--dark-blue);">Calculate</h5>
+                <p class="text-muted small mb-0 d-none d-md-block">วิเคราะห์ BMI และแผนพลังงาน</p>
+            </a>
+        </div>
+
+        <div class="col-6 col-lg-3">
             <a href="exercise.html" class="hub-card">
-                <div class="icon-wrapper bg-exercise">
+                <div class="icon-box bg-ex">
                     <i class="bi bi-bicycle"></i>
                 </div>
-                <h4 class="fw-bold" style="color: var(--dark-blue);">Exercise</h4>
-                <p class="text-muted small mb-0">บันทึกการเผาผลาญจากการออกกำลังกาย</p>
+                <h5 class="fw-bold" style="color: var(--dark-blue);">Exercise</h5>
+                <p class="text-muted small mb-0 d-none d-md-block">บันทึกการเผาผลาญแคลอรี่</p>
             </a>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-6 col-lg-3">
             <a href="energy.html" class="hub-card">
-                <div class="icon-wrapper bg-energy">
+                <div class="icon-box bg-en">
                     <i class="bi bi-fire"></i>
                 </div>
-                <h4 class="fw-bold" style="color: var(--dark-blue);">Energy</h4>
-                <p class="text-muted small mb-0">คำนวณและบันทึกพลังงานจากอาหาร</p>
+                <h5 class="fw-bold" style="color: var(--dark-blue);">Energy</h5>
+                <p class="text-muted small mb-0 d-none d-md-block">บันทึกการทานอาหาร</p>
             </a>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-6 col-lg-3">
             <a href="profile.html" class="hub-card">
-                <div class="icon-wrapper bg-profile">
+                <div class="icon-box bg-us">
                     <i class="bi bi-person-gear"></i>
                 </div>
-                <h4 class="fw-bold" style="color: var(--dark-blue);">Users</h4>
-                <p class="text-muted small mb-0">ข้อมูลส่วนตัวและระดับกิจกรรม</p>
+                <h5 class="fw-bold" style="color: var(--dark-blue);">Users</h5>
+                <p class="text-muted small mb-0 d-none d-md-block">ข้อมูลส่วนตัวและเป้าหมาย</p>
             </a>
         </div>
     </div>
 </div>
 
 <script>
-    // ดึงข้อมูลผู้ใช้งานจาก LocalStorage
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-    // ตรวจสอบความปลอดภัย: ถ้าไม่มีข้อมูลในเครื่องให้เด้งกลับไปหน้า Login
     if (!currentUser) {
         window.location.href = "index.html";
     } else {
-        // นำ "ชื่อจริง" (ดึงมาจาก Col B ของ Profile ตอน Login) มาแสดงผล
+        // แสดงชื่อจริงที่ดึงมาจากชีต Profile
         document.getElementById('displayName').innerText = currentUser.name || "ผู้ใช้งาน";
     }
 
-    // ฟังก์ชันออกจากระบบ
     function logout() {
-        localStorage.removeItem('currentUser'); // ล้าง Session
-        window.location.href = "index.html"; // กลับหน้า Login
+        localStorage.removeItem('currentUser');
+        window.location.href = "index.html";
     }
 </script>
 
