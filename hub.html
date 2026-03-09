@@ -33,6 +33,18 @@
             color: var(--primary-blue); font-weight: 500; font-size: 0.9rem;
         }
 
+        /* Dashboard Styles */
+        .dashboard-section {
+            background: white; border-radius: 2rem; padding: 2rem;
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.05);
+            margin-bottom: 2.5rem; border: 1px solid #f1f5f9;
+        }
+        .stat-box { text-align: center; padding: 10px; }
+        .stat-value { font-size: 1.6rem; font-weight: 700; color: var(--primary-blue); }
+        .stat-label { font-size: 0.8rem; color: #64748b; font-weight: 600; text-transform: uppercase; }
+        .progress { height: 12px; border-radius: 50px; background: #f1f5f9; overflow: hidden; }
+        .progress-bar { transition: width 1s ease-in-out; }
+
         /* Card Menu */
         .hub-card {
             background: white; border-radius: 2rem; border: none;
@@ -53,18 +65,17 @@
             font-size: 2.2rem; margin-bottom: 1.2rem;
         }
 
-        /* Colors for each card */
-        .bg-ex { background: #dbeafe; color: #1e40af; } /* Exercise */
-        .bg-en { background: #fee2e2; color: #b91c1c; } /* Energy */
-        .bg-calc { background: #f0fdf4; color: #166534; } /* Calculate */
-        .bg-us { background: #fef3c7; color: #92400e; } /* Users */
+        .bg-ex { background: #dbeafe; color: #1e40af; }
+        .bg-en { background: #fee2e2; color: #b91c1c; }
+        .bg-calc { background: #f0fdf4; color: #166534; }
+        .bg-us { background: #fef3c7; color: #92400e; }
 
         .btn-logout { border-radius: 10px; font-size: 0.85rem; font-weight: 500; }
     </style>
 </head>
 <body>
 
-<nav class="navbar-custom mb-5">
+<nav class="navbar-custom mb-4">
     <div class="container d-flex justify-content-between align-items-center">
         <div class="fw-bold fs-4" style="color: var(--dark-blue);">
             <i class="bi bi-activity me-2" style="color: var(--primary-blue);"></i>Healthy System
@@ -81,48 +92,76 @@
 </nav>
 
 <div class="container">
-    <div class="text-center mb-5">
-        <h2 class="fw-bold" style="color: var(--dark-blue);">ศูนย์รวมเมนูจัดการสุขภาพ</h2>
-        <p class="text-muted">เลือกรายการที่ต้องการเพื่อเริ่มดูแลตัวเองวันนี้</p>
+    <div class="text-center mb-4">
+        <h2 class="fw-bold" style="color: var(--dark-blue);">สวัสดีตอนเย็น, <span id="welcomeName">ผู้ใช้งาน</span>!</h2>
+        <p class="text-muted">มาดูสรุปสุขภาพของคุณในวันนี้กัน</p>
     </div>
 
-    <div class="row g-4">
+    <div class="dashboard-section">
+        <div class="row align-items-center">
+            <div class="col-lg-4 text-center text-lg-start mb-4 mb-lg-0 border-end-lg">
+                <h5 class="fw-bold mb-2" style="color: var(--dark-blue);">เป้าหมายรายวัน (TDEE)</h5>
+                <div class="display-6 fw-bold text-primary mb-1"><span id="dashTdee">0</span></div>
+                <p class="text-muted small">กิโลแคลอรี่ (kcal)</p>
+                <div class="badge bg-light text-primary border mt-2">BMR: <span id="dashBmr">0</span> kcal</div>
+            </div>
+            <div class="col-lg-8">
+                <div class="row">
+                    <div class="col-4 stat-box">
+                        <div class="stat-label">ได้รับ (Energy)</div>
+                        <div class="stat-value text-success" id="dashIntake">0</div>
+                        <div class="small text-muted">kcal</div>
+                    </div>
+                    <div class="col-4 stat-box border-start border-end">
+                        <div class="stat-label">ใช้ไป (Exercise)</div>
+                        <div class="stat-value text-danger" id="dashBurn">0</div>
+                        <div class="small text-muted">kcal</div>
+                    </div>
+                    <div class="col-4 stat-box">
+                        <div class="stat-label">คงเหลือ</div>
+                        <div class="stat-value" id="dashRemain" style="color: var(--dark-blue);">0</div>
+                        <div class="small text-muted">kcal</div>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="d-flex justify-content-between small fw-bold mb-1">
+                        <span>ความคืบหน้าพลังงาน</span>
+                        <span id="dashPercent">0%</span>
+                    </div>
+                    <div class="progress">
+                        <div id="dashProgress" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-5">
         <div class="col-6 col-lg-3">
             <a href="calculate.html" class="hub-card">
-                <div class="icon-box bg-calc">
-                    <i class="bi bi-calculator"></i>
-                </div>
+                <div class="icon-box bg-calc"><i class="bi bi-calculator"></i></div>
                 <h5 class="fw-bold" style="color: var(--dark-blue);">Calculate</h5>
                 <p class="text-muted small mb-0 d-none d-md-block">วิเคราะห์ BMI และแผนพลังงาน</p>
             </a>
         </div>
-
         <div class="col-6 col-lg-3">
             <a href="exercise.html" class="hub-card">
-                <div class="icon-box bg-ex">
-                    <i class="bi bi-bicycle"></i>
-                </div>
+                <div class="icon-box bg-ex"><i class="bi bi-bicycle"></i></div>
                 <h5 class="fw-bold" style="color: var(--dark-blue);">Exercise</h5>
                 <p class="text-muted small mb-0 d-none d-md-block">บันทึกการเผาผลาญแคลอรี่</p>
             </a>
         </div>
-
         <div class="col-6 col-lg-3">
             <a href="energy.html" class="hub-card">
-                <div class="icon-box bg-en">
-                    <i class="bi bi-fire"></i>
-                </div>
+                <div class="icon-box bg-en"><i class="bi bi-fire"></i></div>
                 <h5 class="fw-bold" style="color: var(--dark-blue);">Energy</h5>
                 <p class="text-muted small mb-0 d-none d-md-block">บันทึกการทานอาหาร</p>
             </a>
         </div>
-
         <div class="col-6 col-lg-3">
             <a href="profile.html" class="hub-card">
-                <div class="icon-box bg-us">
-                    <i class="bi bi-person-gear"></i>
-                </div>
-                <h5 class="fw-bold" style="color: var(--dark-blue);">Users</h5>
+                <div class="icon-box bg-us"><i class="bi bi-person-gear"></i></div>
+                <h5 class="fw-bold" style="color: var(--dark-blue);">Profile</h5>
                 <p class="text-muted small mb-0 d-none d-md-block">ข้อมูลส่วนตัวและเป้าหมาย</p>
             </a>
         </div>
@@ -130,13 +169,60 @@
 </div>
 
 <script>
+    // 🚩 URL API ชุดรวมล่าสุด (ที่เพิ่ม getDashboardData เข้าไป)
+    const API_URL = "https://script.google.com/macros/s/AKfycbwilxTT49Z77rXluPvYnKeDY6sdBD25-nu96FE3Xw3D0E6CPTnHPHSAi9B9WHj412gx/exec";
+    
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
     if (!currentUser) {
         window.location.href = "index.html";
     } else {
-        // แสดงชื่อจริงที่ดึงมาจากชีต Profile
         document.getElementById('displayName').innerText = currentUser.name || "ผู้ใช้งาน";
+        document.getElementById('welcomeName').innerText = currentUser.name || "ผู้ใช้งาน";
+        loadDashboard(); // เรียกใช้งาน Dashboard ทันที
+    }
+
+    async function loadDashboard() {
+        try {
+            const response = await fetch(API_URL, {
+                method: "POST",
+                body: JSON.stringify({ 
+                    action: "getDashboardData", 
+                    userId: currentUser.userId 
+                })
+            });
+            const res = await response.json();
+            
+            if (res.status === "success") {
+                const intake = res.intake || 0;
+                const burn = res.burn || 0;
+                const tdee = res.tdee || 0;
+                const bmr = res.bmr || 0;
+                const remain = tdee - intake + burn;
+                
+                // คำนวณเปอร์เซ็นต์ (ไม่ให้เกิน 100%)
+                const percent = tdee > 0 ? Math.min((intake / tdee) * 100, 100) : 0;
+
+                // อัปเดตตัวเลข
+                document.getElementById('dashTdee').innerText = Math.round(tdee).toLocaleString();
+                document.getElementById('dashBmr').innerText = Math.round(bmr).toLocaleString();
+                document.getElementById('dashIntake').innerText = Math.round(intake).toLocaleString();
+                document.getElementById('dashBurn').innerText = Math.round(burn).toLocaleString();
+                document.getElementById('dashRemain').innerText = Math.round(remain).toLocaleString();
+                
+                // อัปเดต Progress Bar
+                document.getElementById('dashPercent').innerText = Math.round(percent) + "%";
+                const progressBar = document.getElementById('dashProgress');
+                progressBar.style.width = percent + "%";
+
+                // ปรับสี Progress Bar ตามระดับแคลอรี่
+                if (percent > 90) progressBar.className = "progress-bar bg-danger";
+                else if (percent > 70) progressBar.className = "progress-bar bg-warning";
+                else progressBar.className = "progress-bar bg-primary";
+            }
+        } catch (e) {
+            console.error("Dashboard error:", e);
+        }
     }
 
     function logout() {
