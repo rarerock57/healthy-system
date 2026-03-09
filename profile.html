@@ -6,7 +6,7 @@
     <title>My Profile - Healthy System</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -70,7 +70,15 @@
             transition: 0.3s;
         }
 
-        .form-control:focus, .form-select:focus {
+        /* สไตล์สำหรับช่องที่ห้ามแก้ไข (Readonly) */
+        .form-control[readonly] {
+            background-color: #f1f5f9;
+            color: #94a3b8;
+            cursor: not-allowed;
+            border-color: #e2e8f0;
+        }
+
+        .form-control:focus:not([readonly]), .form-select:focus {
             border-color: var(--sky-blue);
             background: white;
             box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.1);
@@ -105,7 +113,7 @@
                     <div class="display-5 text-primary mb-2">
                         <i class="bi bi-person-bounding-box"></i>
                     </div>
-                    <h3 id="userNameDisplay" class="fw-bold" style="color: var(--dark-blue);">กำลังโหลด...</h3>
+                    <h3 id="userNameDisplay" class="fw-bold" style="color: var(--dark-blue);">...</h3>
                     <span class="user-id-badge">ID: <span id="userIdDisplay">00000</span></span>
                 </div>
 
@@ -113,14 +121,11 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label">อายุ (ปี)</label>
-                            <input type="number" id="age" class="form-control" required>
+                            <input type="text" id="age" class="form-control" readonly>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">เพศ</label>
-                            <select id="gender" class="form-select">
-                                <option value="male">ชาย</option>
-                                <option value="female">หญิง</option>
-                            </select>
+                            <input type="text" id="gender" class="form-control" readonly>
                         </div>
                     </div>
                     <div class="row">
@@ -134,7 +139,7 @@
                         </div>
                     </div>
                     <div class="mb-4">
-                        <label class="form-label">ระดับกิจกรรม</label>
+                        <label class="form-label">ระดับกิจกรรม (อัปเดตตามจริง)</label>
                         <select id="activity" class="form-select">
                             <option value="1.2">ไม่ออกกำลังกายเลย (งานนั่งโต๊ะ)</option>
                             <option value="1.375">ขยับร่างกายบ้าง (1-3 วัน/สัปดาห์)</option>
@@ -157,20 +162,21 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    // 🚩 ใส่ URL ของ GAS โปรเจกต์ Profile ตรงนี้เรียบร้อยแล้ว
+    // URL API จากที่คุณส่งมา
     const API_URL = "https://script.google.com/macros/s/AKfycbyzl1SWvlpA5dB0bRBBVDDI7XPCb_BkVB52WPbOvgclJTAxH9u7qYw2IIvrX-edUhwA/exec";
 
     // ดึงข้อมูล User จาก LocalStorage
     const userData = JSON.parse(localStorage.getItem('currentUser'));
 
-    // ตรวจสอบความปลอดภัย
     if (!userData) {
         window.location.href = "index.html";
     } else {
+        // แสดงชื่อจากฐานข้อมูลเดิมก่อนในระหว่างรอโหลดจากชีต
+        document.getElementById('userNameDisplay').innerText = userData.name || "ผู้ใช้งาน";
         document.getElementById('userIdDisplay').innerText = userData.userId;
     }
 
-    // 1. ดึงข้อมูลโปรไฟล์มาแสดง (ทำงานทันทีเมื่อเปิดหน้า)
+    // 1. ฟังก์ชันดึงข้อมูลจากชีตมาแสดง (ID, ชื่อ นามสกุล, อายุ, เพศ, น้ำหนัก, ส่วนสูง, กิจกรรม)
     async function fetchProfile() {
         try {
             const response = await fetch(API_URL, {
@@ -183,24 +189,24 @@
             const res = await response.json();
             
             if (res.status === "success") {
-                document.getElementById('userNameDisplay').innerText = res.name;
-                document.getElementById('age').value = res.age;
-                document.getElementById('gender').value = res.gender;
-                document.getElementById('weight').value = res.weight;
-                document.getElementById('height').value = res.height;
-                document.getElementById('activity').value = res.activity;
-            } else {
-                Swal.fire('แจ้งเตือน', 'ไม่พบข้อมูลโปรไฟล์เดิมของคุณ', 'info');
+                // แสดงชื่อ นามสกุล (ดึงจาก Col B)
+                document.getElementById('userNameDisplay').innerText = res.fullName;
+                
+                // เติมข้อมูลลงในช่องต่างๆ
+                document.getElementById('age').value = res.age;       // Col C
+                document.getElementById('gender').value = res.gender; // Col D
+                document.getElementById('weight').value = res.weight; // Col E
+                document.getElementById('height').value = res.height; // Col F
+                document.getElementById('activity').value = res.activity; // Col G
             }
         } catch (e) {
             console.error("Error fetching profile", e);
         }
     }
 
-    // เรียกใช้งานฟังก์ชันดึงข้อมูล
     fetchProfile();
 
-    // 2. ฟังก์ชันอัปเดตข้อมูล
+    // 2. ฟังก์ชันบันทึกเฉพาะ น้ำหนัก, ส่วนสูง, กิจกรรม
     document.getElementById('profileForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         
@@ -215,11 +221,9 @@
         const payload = {
             action: "updateProfile",
             userId: userData.userId,
-            age: document.getElementById('age').value,
-            gender: document.getElementById('gender').value,
-            weight: document.getElementById('weight').value,
-            height: document.getElementById('height').value,
-            activity: document.getElementById('activity').value
+            weight: document.getElementById('weight').value, // คอลัมน์ E
+            height: document.getElementById('height').value, // คอลัมน์ F
+            activity: document.getElementById('activity').value // คอลัมน์ G
         };
 
         try {
@@ -232,8 +236,8 @@
             if (res.status === "success") {
                 Swal.fire({
                     icon: 'success',
-                    title: 'สำเร็จ!',
-                    text: 'อัปเดตข้อมูลร่างกายและค่าคำนวณใหม่เรียบร้อยแล้ว',
+                    title: 'อัปเดตสำเร็จ!',
+                    text: 'ข้อมูลร่างกายของคุณถูกบันทึกแล้ว',
                     confirmButtonColor: '#2563eb'
                 });
             } else {
