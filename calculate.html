@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitPlan Pro - Premium Health Planner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <style>
+        :root {
+            --primary: #4A90E2;
+            --success: #2ECC71;
+            --warning: #F1C40F;
+            --danger: #E74C3C;
+            --orange: #F39C12;
+            --bg: #F0F4F8;
+            --text-main: #2D3436;
+        }
+
+        body { font-family: 'Kanit', sans-serif; background-color: var(--bg); margin: 0; padding: 20px; display: flex; justify-content: center; color: var(--text-main); }
+        .app-card { background: #ffffff; border-radius: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); width: 100%; max-width: 600px; padding: 35px; box-sizing: border-box; position: relative; }
+        
+        /* Navigation Style */
+        .nav-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .back-to-hub { text-decoration: none; color: var(--primary); font-weight: 500; font-size: 14px; display: flex; align-items: center; gap: 5px; transition: 0.3s; }
+        .back-to-hub:hover { color: #357ABD; transform: translateX(-3px); }
+
+        h2 { text-align: center; margin-top: 0; font-size: 28px; color: var(--primary); }
+        .input-group { margin-bottom: 18px; }
+        label { display: block; margin-bottom: 6px; font-size: 14px; font-weight: 500; color: #636E72; }
+        input, select { width: 100%; padding: 15px; border: 2px solid #E2E8F0; border-radius: 14px; font-size: 16px; box-sizing: border-box; font-family: inherit; transition: 0.3s; }
+        input:focus { outline: none; border-color: var(--primary); background: #F8FAFF; }
+        
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+        button { width: 100%; padding: 16px; border: none; border-radius: 18px; font-size: 18px; font-weight: 600; cursor: pointer; transition: 0.3s; font-family: inherit; }
+        .btn-primary { background: linear-gradient(135deg, #4A90E2, #357ABD); color: white; margin-top: 10px; }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(74,144,226,0.3); }
+        
+        .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 25px; }
+        .btn-back { background: #EDF2F7; color: #4A5568; }
+        .btn-hub { background: var(--primary); color: white; }
+
+        #resultBox { display: none; animation: slideUp 0.5s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .bmi-container { text-align: center; color: white; padding: 30px; border-radius: 25px; margin-bottom: 25px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .bmi-value { font-size: 56px; font-weight: 700; line-height: 1; margin-bottom: 5px; }
+        .bmi-label { font-size: 22px; font-weight: 500; }
+
+        .stat-card { background: #FFFFFF; border-radius: 20px; padding: 20px; border: 1px solid #EDF2F7; margin-bottom: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+        .kcal-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; text-align: center; margin-bottom: 15px; }
+        .kcal-item span { display: block; font-size: 20px; font-weight: 600; color: var(--primary); }
+        .kcal-item small { font-size: 12px; color: #718096; font-weight: 500; }
+        
+        .target-box { background: #F0FFF4; border: 2px dashed #68D391; color: #22543D; padding: 20px; border-radius: 18px; text-align: center; }
+        .target-box b { font-size: 32px; display: block; color: #2F855A; }
+
+        .safety-alert { background: #FFFBEB; border-left: 6px solid var(--warning); padding: 15px; margin-bottom: 20px; border-radius: 12px; font-size: 14px; color: #92400E; }
+
+        table { width: 100%; border-collapse: separate; border-spacing: 0 10px; }
+        td { padding: 15px; vertical-align: middle; }
+        .z-row td:first-child { border-radius: 15px 0 0 15px; font-weight: 600; width: 30%; }
+        .z-row td:nth-child(2) { text-align: center; font-weight: 700; width: 25%; font-size: 16px; border-left: 1px solid rgba(0,0,0,0.05); border-right: 1px solid rgba(0,0,0,0.05); }
+        .z-row td:last-child { border-radius: 0 15px 15px 0; font-size: 13px; line-height: 1.4; padding-left: 15px; }
+
+        .z1 { background-color: #F1F2F6; color: #2F3542; }
+        .z2 { background-color: #E8F8F0; color: #1E8449; }
+        .z3 { background-color: #FEF9E7; color: #9A7D0A; }
+        .z4 { background-color: #FEF5EE; color: #D35400; }
+        .z5 { background-color: #FDEDEC; color: #C0392B; }
+    </style>
+</head>
+<body>
+
+<div class="app-card">
+    <div class="nav-header">
+        <a href="hub.html" class="back-to-hub">
+            <i class="bi bi-arrow-left-circle-fill"></i> กลับสู่หน้าหลัก
+        </a>
+        <span style="font-size: 12px; color: #A0AEC0;">Healthy System</span>
+    </div>
+
+    <div id="inputSection">
+        <h2>🥗 FitPlan Pro</h2>
+        <p style="text-align: center; color: #718096; font-size: 14px; margin-bottom: 30px;">วิเคราะห์ร่างกายและวางแผนการออกกำลังกาย</p>
+        
+        <div class="grid-2">
+            <div class="input-group"><label>อายุ (ปี)</label><input type="number" id="age" placeholder="36"></div>
+            <div class="input-group"><label>เพศ</label><select id="gender"><option value="male">ชาย</option><option value="female">หญิง</option></select></div>
+        </div>
+
+        <div class="grid-2">
+            <div class="input-group"><label>น้ำหนัก (กก.)</label><input type="number" id="weight"></div>
+            <div class="input-group"><label>ส่วนสูง (ซม.)</label><input type="number" id="height"></div>
+        </div>
+
+        <div class="input-group">
+            <label>ระดับกิจกรรม</label>
+            <select id="activity">
+                <option value="1.2">ไม่ออกกำลังกายเลย (งานนั่งโต๊ะ)</option>
+                <option value="1.375">ขยับร่างกายบ้าง (1-3 วัน/สัปดาห์)</option>
+                <option value="1.55">ออกกำลังกายสม่ำเสมอ (3-5 วัน/สัปดาห์)</option>
+                <option value="1.725">ออกกำลังกายหนัก (6-7 วัน/สัปดาห์)</option>
+                <option value="1.9">ระดับนักกีฬา / ทำงานใช้แรงงานหนัก</option>
+            </select>
+        </div>
+
+        <h3 style="color: var(--orange); border-top: 1px solid #EDF2F7; padding-top: 25px; font-size: 18px;">🚩 เป้าหมายลดน้ำหนัก</h3>
+        <div class="grid-2">
+            <div class="input-group"><label>ต้องการลด (กก.)</label><input type="number" id="goalWeight"></div>
+            <div class="input-group"><label>ภายในเวลา (เดือน)</label><input type="number" id="goalMonths"></div>
+        </div>
+        
+        <button onclick="calculate()" class="btn-primary">เริ่มวิเคราะห์ร่างกาย</button>
+    </div>
+
+    <div id="resultBox">
+        <div id="bmiCard" class="bmi-container">
+            <div style="font-size: 16px; opacity: 0.85; letter-spacing: 1px;">ดัชนีมวลกาย (BMI)</div>
+            <div class="bmi-value" id="bmiVal">0.0</div>
+            <div class="bmi-label" id="bmiStatus">ปกติ</div>
+        </div>
+
+        <div id="safetyWarning" class="safety-alert" style="display:none;">
+            <b>💡 คำแนะนำความปลอดภัย:</b> แผนนี้ลดเร็วเกินไป เราปรับแคลอรี่ที่ต้องกินให้เท่ากับพลังงานพื้นฐานที่ร่างกายต้องการ <b>BMR (<span id="warnBmr"></span> kcal)</b> เพื่อสุขภาพที่ดีในระยะยาว
+        </div>
+
+        <div class="stat-card">
+            <div class="kcal-grid">
+                <div class="kcal-item"><small>ค่า BMR</small><span id="resBmr">0</span></div>
+                <div class="kcal-item"><small>ค่า TDEE</small><span id="resTdee">0</span></div>
+                <div class="kcal-item"><small>ตัดออก/วัน</small><span id="resDeficit" style="color:var(--danger)">0</span></div>
+            </div>
+            <div class="target-box">
+                <small style="font-weight: 500;">พลังงานที่คุณควรได้รับต่อวัน</small>
+                <b id="resTarget">0</b>
+                <small>กิโลแคลอรี่ (kcal)</small>
+            </div>
+        </div>
+
+        <h3 style="font-size: 18px; margin-bottom: 10px;">💓 Heart Rate Zones & กิจกรรม</h3>
+        <div id="hrContent"></div>
+
+        <div class="btn-group">
+            <button class="btn-back" onclick="location.reload()">↺ คำนวณใหม่</button>
+            <button class="btn-hub" onclick="window.location.href='hub.html'">ไปหน้าหลัก</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function calculate() {
+        const age = parseFloat(document.getElementById('age').value);
+        const weight = parseFloat(document.getElementById('weight').value);
+        const height = parseFloat(document.getElementById('height').value);
+        const gender = document.getElementById('gender').value;
+        const activity = parseFloat(document.getElementById('activity').value);
+        const goalW = parseFloat(document.getElementById('goalWeight').value);
+        const goalM = parseFloat(document.getElementById('goalMonths').value);
+
+        if (!age || !weight || !height || !goalW || !goalM) { alert("กรุณากรอกข้อมูลให้ครบถ้วนนะครับ"); return; }
+
+        const bmi = weight / ((height / 100) ** 2);
+        const bc = document.getElementById('bmiCard');
+        const bs = document.getElementById('bmiStatus');
+        document.getElementById('bmiVal').innerText = bmi.toFixed(1);
+        
+        if (bmi < 18.5) { bs.innerText="ผอมเกินไป"; bc.style.background="linear-gradient(135deg, #3498DB, #2980B9)"; }
+        else if (bmi < 23) { bs.innerText="สมส่วน (สุขภาพดี)"; bc.style.background="linear-gradient(135deg, #2ECC71, #27AE60)"; }
+        else if (bmi < 25) { bs.innerText="น้ำหนักเกิน"; bc.style.background="linear-gradient(135deg, #F1C40F, #F39C12)"; bc.style.color="#2D3436"; }
+        else if (bmi < 30) { bs.innerText="เริ่มอ้วน (ควรระวัง)"; bc.style.background="linear-gradient(135deg, #E67E22, #D35400)"; bc.style.color="white"; }
+        else { bs.innerText="อ้วนมาก (อันตราย)"; bc.style.background="linear-gradient(135deg, #E74C3C, #C0392B)"; bc.style.color="white"; }
+
+        let bmr = (gender === "male") ? (10 * weight) + (6.25 * height) - (5 * age) + 5 : (10 * weight) + (6.25 * height) - (5 * age) - 161;
+        const tdee = bmr * activity;
+        const deficit = (goalW * 7700) / (goalM * 30);
+        let target = tdee - deficit;
+
+        if (target < bmr) {
+            target = bmr;
+            document.getElementById('safetyWarning').style.display = "block";
+            document.getElementById('warnBmr').innerText = Math.round(bmr).toLocaleString();
+        }
+
+        document.getElementById('resBmr').innerText = Math.round(bmr).toLocaleString();
+        document.getElementById('resTdee').innerText = Math.round(tdee).toLocaleString();
+        document.getElementById('resDeficit').innerText = "-" + Math.round(deficit).toLocaleString();
+        document.getElementById('resTarget').innerText = Math.round(target).toLocaleString();
+
+        const max = 220 - age;
+        const zones = [
+            { n: "Zone 1", p: "50-60%", v: `${Math.round(max*0.5)}-${Math.round(max*0.6)}`, a: "เดินเร็ว, ทำงานบ้าน, ยืดเหยียดร่างกาย", s: "z1" },
+            { n: "Zone 2", p: "60-70%", v: `${Math.round(max*0.6)}-${Math.round(max*0.7)}`, a: "เดินชัน, วิ่งเบาๆ ที่ยังคุยได้สบาย, ปั่นจักรยาน", s: "z2" },
+            { n: "Zone 3", p: "70-80%", v: `${Math.round(max*0.7)}-${Math.round(max*0.8)}`, a: "วิ่งต่อเนื่อง, แอโรบิก, ว่ายน้ำสม่ำเสมอ", s: "z3" },
+            { n: "Zone 4", p: "80-90%", v: `${Math.round(max*0.8)}-${Math.round(max*0.9)}`, a: "วิ่งเร็ว, เวทเทรนนิ่งหนัก, วิ่งสลับเดินแบบเร็ว", s: "z4" },
+            { n: "Zone 5", p: "90-100%", v: `${Math.round(max*0.9)}-${max}`, a: "วิ่งสปรินท์สุดแรง, แข่งขันกีฬาที่ใช้แรงสูงสุด", s: "z5" }
+        ];
+        
+        let hrHtml = "<table>";
+        zones.forEach(z => {
+            hrHtml += `
+            <tr class="z-row ${z.s}">
+                <td>${z.n}<br><small style="font-weight:normal;opacity:0.7">${z.p}</small></td>
+                <td>${z.v}</td>
+                <td>${z.a}</td>
+            </tr>`;
+        });
+        hrHtml += "</table>";
+        document.getElementById('hrContent').innerHTML = hrHtml;
+
+        document.getElementById('inputSection').style.display = "none";
+        document.getElementById('resultBox').style.display = "block";
+        window.scrollTo(0,0);
+    }
+</script>
+</body>
+</html>
