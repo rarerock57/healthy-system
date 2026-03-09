@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Healthy System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --dark-blue: #1e3a8a;
+            --primary-blue: #2563eb;
+            --sky-blue: #60a5fa;
+            --bg-light: #f8fafc;
+        }
+
+        body { 
+            background-color: var(--bg-light); 
+            font-family: 'Kanit', sans-serif; 
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        .nav-custom { 
+            background: white; 
+            border-bottom: 1px solid #e2e8f0; 
+            padding: 1rem 0; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+
+        .profile-card { 
+            background: white; 
+            border-radius: 2rem; 
+            border: none; 
+            padding: 2.5rem; 
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.05); 
+            margin-top: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .btn-update { 
+            background: linear-gradient(135deg, var(--primary-blue), var(--sky-blue)); 
+            border: none; 
+            color: white; 
+            padding: 14px; 
+            border-radius: 12px; 
+            font-weight: 500; 
+            transition: all 0.3s ease;
+        }
+
+        .btn-update:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.2);
+        }
+
+        .form-label { 
+            font-size: 0.85rem; 
+            font-weight: 600; 
+            color: #64748b; 
+            margin-bottom: 8px;
+        }
+
+        .form-control, .form-select { 
+            border-radius: 12px; 
+            padding: 12px 15px; 
+            border: 2px solid #f1f5f9; 
+            background: #f8fafc; 
+            transition: 0.3s;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--sky-blue);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.1);
+        }
+
+        .user-id-badge {
+            background: #eff6ff;
+            color: var(--primary-blue);
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="nav-custom">
+    <div class="container d-flex justify-content-between align-items-center">
+        <a href="hub.html" class="text-decoration-none fw-bold" style="color: var(--dark-blue);">
+            <i class="bi bi-arrow-left-circle me-1"></i> กลับหน้าหลัก
+        </a>
+        <div class="fw-bold" style="color: var(--primary-blue);">จัดการข้อมูลส่วนตัว</div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="profile-card">
+                <div class="text-center mb-4">
+                    <div class="display-5 text-primary mb-2">
+                        <i class="bi bi-person-bounding-box"></i>
+                    </div>
+                    <h3 id="userNameDisplay" class="fw-bold" style="color: var(--dark-blue);">กำลังโหลด...</h3>
+                    <span class="user-id-badge">ID: <span id="userIdDisplay">00000</span></span>
+                </div>
+
+                <form id="profileForm">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">อายุ (ปี)</label>
+                            <input type="number" id="age" class="form-control" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">เพศ</label>
+                            <select id="gender" class="form-select">
+                                <option value="male">ชาย</option>
+                                <option value="female">หญิง</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">น้ำหนัก (กก.)</label>
+                            <input type="number" id="weight" class="form-control" step="0.1" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">ส่วนสูง (ซม.)</label>
+                            <input type="number" id="height" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">ระดับกิจกรรม</label>
+                        <select id="activity" class="form-select">
+                            <option value="1.2">ไม่ออกกำลังกายเลย (งานนั่งโต๊ะ)</option>
+                            <option value="1.375">ขยับร่างกายบ้าง (1-3 วัน/สัปดาห์)</option>
+                            <option value="1.55">ออกกำลังกายสม่ำเสมอ (3-5 วัน/สัปดาห์)</option>
+                            <option value="1.725">ออกกำลังกายหนัก (6-7 วัน/สัปดาห์)</option>
+                            <option value="1.9">ระดับนักกีฬา / งานใช้แรงงานหนัก</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="btn btn-update w-100">
+                        <span id="btnText">บันทึกการเปลี่ยนแปลง</span>
+                        <div id="btnLoader" class="spinner-border spinner-border-sm d-none"></div>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    // 🚩 ใส่ URL ของ GAS โปรเจกต์ Profile ตรงนี้เรียบร้อยแล้ว
+    const API_URL = "https://script.google.com/macros/s/AKfycbzu8QpL6MHaAqmpYcUA7ByyLsDLOrOlN3Z_DesYJBx8uT7SDepGDhi1PtM14luLD7fh/exec";
+
+    // ดึงข้อมูล User จาก LocalStorage
+    const userData = JSON.parse(localStorage.getItem('currentUser'));
+
+    // ตรวจสอบความปลอดภัย
+    if (!userData) {
+        window.location.href = "index.html";
+    } else {
+        document.getElementById('userIdDisplay').innerText = userData.userId;
+    }
+
+    // 1. ดึงข้อมูลโปรไฟล์มาแสดง (ทำงานทันทีเมื่อเปิดหน้า)
+    async function fetchProfile() {
+        try {
+            const response = await fetch(API_URL, {
+                method: "POST",
+                body: JSON.stringify({ 
+                    action: "getProfile", 
+                    userId: userData.userId 
+                })
+            });
+            const res = await response.json();
+            
+            if (res.status === "success") {
+                document.getElementById('userNameDisplay').innerText = res.name;
+                document.getElementById('age').value = res.age;
+                document.getElementById('gender').value = res.gender;
+                document.getElementById('weight').value = res.weight;
+                document.getElementById('height').value = res.height;
+                document.getElementById('activity').value = res.activity;
+            } else {
+                Swal.fire('แจ้งเตือน', 'ไม่พบข้อมูลโปรไฟล์เดิมของคุณ', 'info');
+            }
+        } catch (e) {
+            console.error("Error fetching profile", e);
+        }
+    }
+
+    // เรียกใช้งานฟังก์ชันดึงข้อมูล
+    fetchProfile();
+
+    // 2. ฟังก์ชันอัปเดตข้อมูล
+    document.getElementById('profileForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const btnLoader = document.getElementById('btnLoader');
+
+        submitBtn.disabled = true;
+        btnText.classList.add('d-none');
+        btnLoader.classList.remove('d-none');
+
+        const payload = {
+            action: "updateProfile",
+            userId: userData.userId,
+            age: document.getElementById('age').value,
+            gender: document.getElementById('gender').value,
+            weight: document.getElementById('weight').value,
+            height: document.getElementById('height').value,
+            activity: document.getElementById('activity').value
+        };
+
+        try {
+            const response = await fetch(API_URL, {
+                method: "POST",
+                body: JSON.stringify(payload)
+            });
+            const res = await response.json();
+
+            if (res.status === "success") {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'สำเร็จ!',
+                    text: 'อัปเดตข้อมูลร่างกายและค่าคำนวณใหม่เรียบร้อยแล้ว',
+                    confirmButtonColor: '#2563eb'
+                });
+            } else {
+                Swal.fire('ผิดพลาด', res.message, 'error');
+            }
+        } catch (e) {
+            Swal.fire('ผิดพลาด', 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้', 'error');
+        } finally {
+            submitBtn.disabled = false;
+            btnText.classList.remove('d-none');
+            btnLoader.classList.add('d-none');
+        }
+    });
+</script>
+
+</body>
+</html>
