@@ -110,7 +110,7 @@
 
     <div class="text-center mt-4">
         <p class="small mb-0 text-muted">ยังไม่มีบัญชี? 
-            <a href="register/register.html" class="register-link">สมัครสมาชิกที่นี่</a>
+            <a href="register.html" class="register-link">สมัครสมาชิกที่นี่</a>
         </p>
     </div>
 </div>
@@ -147,7 +147,6 @@
             const result = await response.json();
 
             if (result.status === "success") {
-                // เก็บข้อมูลลง LocalStorage เพื่อให้หน้า Hub ใช้งานต่อได้
                 localStorage.setItem('currentUser', JSON.stringify({
                     username: result.user.username,
                     userId: result.user.userId,
