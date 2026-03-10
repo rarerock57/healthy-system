@@ -61,7 +61,7 @@
         .form-control {
             padding: 12px 15px;
             border-radius: 12px;
-            border: 2px solid #e2e8f0;
+            border: 2px solid #f1f5f9;
             background-color: #f8fafc;
         }
 
@@ -110,7 +110,7 @@
 
     <div class="text-center mt-4">
         <p class="small mb-0 text-muted">ยังไม่มีบัญชี? 
-            <a href="register.html" class="register-link">สมัครสมาชิกที่นี่</a>
+            <a href="register/register.html" class="register-link">สมัครสมาชิกที่นี่</a>
         </p>
     </div>
 </div>
@@ -118,7 +118,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    // 🚩 อัปเดต URL ของ API ชุดรวมล่าสุดที่คุณระบุ
+    // 🚩 URL API ชุดรวมล่าสุด (Auth + Dashboard)
     const API_URL = "https://script.google.com/macros/s/AKfycbwilxTT49Z77rXluPvYnKeDY6sdBD25-nu96FE3Xw3D0E6CPTnHPHSAi9B9WHj412gx/exec";
 
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
@@ -147,11 +147,11 @@
             const result = await response.json();
 
             if (result.status === "success") {
-                // จัดเก็บข้อมูลผู้ใช้ที่จำเป็นลงใน LocalStorage
+                // เก็บข้อมูลลง LocalStorage เพื่อให้หน้า Hub ใช้งานต่อได้
                 localStorage.setItem('currentUser', JSON.stringify({
                     username: result.user.username,
                     userId: result.user.userId,
-                    name: result.user.name // ใช้แสดงผลในหน้า Hub และ Dashboard
+                    name: result.user.name 
                 }));
                 
                 Swal.fire({
